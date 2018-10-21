@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const { addTask } = require('../db');
+const { notify } = require('../notifications');
 
 const questions = [
   { type: 'input', name: 'title', message: 'Identify the task you are working on:\n' },
@@ -13,8 +14,7 @@ module.exports = () => {
     .then((answers) => {
       console.log(chalk.blue('Pomodoro timer started!'));
       addTask(answers.title, answers.description);
-      // setTimeout(() => { console.log('Pomodoro finish (notification)'); }, 60000 * 25, 'Pomodoro finished!');
-      setTimeout(() => { console.log('Pomodoro finish (notification)'); }, 10000, 'Pomodoro finished!');
+      setTimeout(notify, 10000, 'Pomodoro finished!');
     })
     .catch((err) => {
       console.log(`Unable to start pomodoro timer. Error: ${err}`);

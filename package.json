@@ -20,7 +20,7 @@
     "commander": "^2.19.0",
     "inquirer": "^6.2.0",
     "lowdb": "^1.0.0",
-    "winston": "^3.1.0"
+    "node-notifier": "^5.3.0"
   },
   "devDependencies": {
     "eslint": "^5.7.0",

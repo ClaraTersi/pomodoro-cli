@@ -4,7 +4,7 @@ const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('./db/data.json');
 const db = low(adapter);
 
-db.defaults({ history: [] })
+db.defaults({ tasks: [] })
   .write();
 
 const addTask = (title = '', description = '') => {
