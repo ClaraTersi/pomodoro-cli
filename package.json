@@ -1,0 +1,31 @@
+{
+  "name": "pomodoro-cli",
+  "version": "1.0.0",
+  "description": "Pomodoro application through the command line.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "pomo": "./index.js"
+  },
+  "keywords": [
+    "pomodoro",
+    "cli"
+  ],
+  "author": "Clara Tersi",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "commander": "^2.19.0",
+    "inquirer": "^6.2.0",
+    "lowdb": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1"
+  }
+}
