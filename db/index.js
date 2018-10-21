@@ -7,9 +7,9 @@ const db = low(adapter);
 db.defaults({ history: [] })
   .write();
 
-const addTask = (task = '', description = '') => {
-  db.get('history')
-    .push({ task, description, datetime: new Date() })
+const addTask = (title = '', description = '') => {
+  db.get('tasks')
+    .push({ title, description, started_at: new Date() })
     .write();
 };
 
