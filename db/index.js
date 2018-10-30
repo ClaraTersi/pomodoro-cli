@@ -13,6 +13,12 @@ const addTask = (title = '', description = '') => {
     .write();
 };
 
+const listTasks = () => {
+  return db.get('tasks')
+    .value();
+};
+
 module.exports = {
   addTask,
+  listTasks,
 };
