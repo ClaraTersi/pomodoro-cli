@@ -11,4 +11,9 @@ program
   .description('starts a 25 minute pomodoro timer')
   .action(commands.start);
 
+program
+  .command('report')
+  .description('generate simple report of your tasks')
+  .action(commands.report);
+
 program.parse(process.argv);
