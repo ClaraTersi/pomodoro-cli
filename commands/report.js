@@ -1,3 +1,4 @@
+const { log } = console;
 const chalk = require('chalk');
 const { table } = require('table');
 const { listTasks } = require('../db');
@@ -14,5 +15,5 @@ module.exports = () => {
       },
     },
   };
-  console.log(table(data, config));
+  log(table(data, config));
 };
