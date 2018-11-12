@@ -1,7 +1,10 @@
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
+const os = require('os');
+const path = require('path');
 
-const adapter = new FileSync('./db/data.json');
+const dataFile = path.join(os.homedir(), 'pomodoro-data.json');
+const adapter = new FileSync(dataFile);
 const db = low(adapter);
 
 db.defaults({ tasks: [] })
