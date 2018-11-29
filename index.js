@@ -14,6 +14,9 @@ program
 program
   .command('report')
   .description('generate simple report of your tasks')
-  .action(commands.report);
+  .option('-t, --task <task-id>', 'task to report')
+  .action((cmd) => {
+    commands.report(cmd.task);
+  });
 
 program.parse(process.argv);
