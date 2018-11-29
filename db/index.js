@@ -10,9 +10,9 @@ const db = low(adapter);
 db.defaults({ tasks: [] })
   .write();
 
-const addTask = (title = '', description = '') => {
+const addTask = (id = '', description = '') => {
   db.get('tasks')
-    .push({ title, description, started_at: new Date() })
+    .push({ id, description, started_at: new Date() })
     .write();
 };
 
@@ -21,7 +21,14 @@ const listTasks = () => {
     .value();
 };
 
+const getSingleTask = (taskId) => {
+  return db.get('tasks')
+    .filter(tasks => tasks.id === taskId)
+    .value();
+};
+
 module.exports = {
   addTask,
   listTasks,
+  getSingleTask,
 };
