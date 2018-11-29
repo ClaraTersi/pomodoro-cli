@@ -30,4 +30,5 @@ const generateReport = (tasks) => {
 module.exports = (taskTitle) => {
   const tasks = getTasks(taskTitle);
   log(generateReport(tasks));
+  log(`${chalk.green.bold('Time spent in minutes:')} ${tasks.length * 25}\n`);
 };
