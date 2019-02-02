@@ -19,6 +19,7 @@ module.exports = () => {
       log(chalk.blue('Pomodoro timer started!'));
       addTask(answers.title, answers.description);
       const bar = new ProgressBar(progressText, { total: 25, incomplete: ' ' });
+      bar.tick(0, { task: answers.title });
       const timer = setInterval(() => {
         bar.tick({ task: answers.title });
         if (bar.complete) {
