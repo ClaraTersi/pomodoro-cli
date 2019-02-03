@@ -3,10 +3,10 @@ const chalk = require('chalk');
 const { table } = require('table');
 const { listTasks, getSingleTask } = require('../db');
 
-const getTasks = (taskTitle) => {
+const getTasks = (taskLabel) => {
   let tasks = [];
-  if (taskTitle) {
-    tasks = getSingleTask(taskTitle);
+  if (taskLabel) {
+    tasks = getSingleTask(taskLabel);
   } else {
     tasks = listTasks();
   }
@@ -15,8 +15,13 @@ const getTasks = (taskTitle) => {
 
 const generateReport = (tasks) => {
   const report = [];
-  report.push([chalk.green.bold('TASK'), chalk.green.bold('DESCRIPTION'), chalk.green.bold('STARTED AT')]);
-  tasks.map(task => report.push([task.id, task.description, task.started_at]));
+  report.push([
+    chalk.green.bold('TASK'),
+    chalk.green.bold('DESCRIPTION'),
+    chalk.green.bold('STARTED AT'),
+    chalk.green.bold('FINISHED AT'),
+  ]);
+  tasks.map(task => report.push([task.label, task.description, task.started_at, task.finished_at]));
   const config = {
     columns: {
       1: {
