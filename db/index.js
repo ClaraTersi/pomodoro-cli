@@ -12,7 +12,12 @@ db.defaults({ tasks: [] })
 
 const addTask = (id = '', description = '') => {
   db.get('tasks')
-    .push({ id, description, started_at: new Date() })
+    .push({
+      id,
+      description,
+      started_at: new Date(),
+      finished_at: '',
+    })
     .write();
 };
 
