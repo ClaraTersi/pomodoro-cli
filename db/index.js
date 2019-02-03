@@ -51,10 +51,17 @@ const setTaskFinishTime = (id) => {
     .write();
 };
 
+const getLabels = () => {
+  const allLabels = db.get('tasks').map('label').value();
+  const uniqueLabels = Array.from(new Set(allLabels));
+  return uniqueLabels;
+};
+
 module.exports = {
   addTask,
   listTasks,
   getSingleTask,
   currentTaskId,
   setTaskFinishTime,
+  getLabels,
 };
