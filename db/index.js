@@ -35,7 +35,7 @@ const listTasks = () => {
 
 const getSingleTask = (taskLabel) => {
   return db.get('tasks')
-    .filter(tasks => tasks.label === taskId)
+    .filter(tasks => tasks.label === taskLabel)
     .value();
 };
 
