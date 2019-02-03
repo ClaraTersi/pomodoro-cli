@@ -25,7 +25,7 @@ const addTask = (label = '', description = '') => {
   db.get('tasks')
     .push({
       id: nextId,
-      label,
+      label: label.toUpperCase(),
       description,
       started_at: new Date(),
       finished_at: '',
