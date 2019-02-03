@@ -7,18 +7,25 @@ const dataFile = path.join(os.homedir(), 'pomodoro-data.json');
 const adapter = new FileSync(dataFile);
 const db = low(adapter);
 
-db.defaults({ tasks: [] })
-  .write();
+db.defaults({
+  tasks: [],
+  configuration: {
+    next_id: 1,
+  },
+}).write();
 
-const addTask = (id = '', description = '') => {
+const addTask = (label = '', description = '') => {
+  const nextId = db.get('configuration.next_id').value();
   db.get('tasks')
     .push({
-      id,
+      id: nextId,
+      label,
       description,
       started_at: new Date(),
       finished_at: '',
     })
     .write();
+  db.set('configuration.next_id', nextId + 1).write();
 };
 
 const listTasks = () => {
@@ -26,9 +33,9 @@ const listTasks = () => {
     .value();
 };
 
-const getSingleTask = (taskId) => {
+const getSingleTask = (taskLabel) => {
   return db.get('tasks')
-    .filter(tasks => tasks.id === taskId)
+    .filter(tasks => tasks.label === taskId)
     .value();
 };
 
