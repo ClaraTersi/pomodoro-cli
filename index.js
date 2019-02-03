@@ -19,4 +19,9 @@ program
     commands.report(cmd.task);
   });
 
+program
+  .command('labels')
+  .description('list all task labels')
+  .action(commands.labels);
+
 program.parse(process.argv);
