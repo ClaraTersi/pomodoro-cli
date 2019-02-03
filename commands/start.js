@@ -2,7 +2,7 @@ const { log } = console;
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const ProgressBar = require('progress');
-const { addTask } = require('../db');
+const { addTask, currentTaskId, setTaskFinishTime } = require('../db');
 const { notify } = require('../notifications');
 
 const questions = [
@@ -21,7 +21,7 @@ module.exports = () => {
       addTask(answers.label, answers.description);
 
       process.on('SIGINT', () => {
-        // TODO: record the time the task ended
+        setTaskFinishTime(currentTaskId());
         log(chalk.red(`\nTask ${answers.label} interrupted.`));
         process.exit();
       });
@@ -32,6 +32,7 @@ module.exports = () => {
       const timer = setInterval(() => {
         bar.tick({ task: answers.label });
         if (bar.complete) {
+          setTaskFinishTime(currentTaskId());
           notify();
           log(chalk.blue('Pomodoro finished!'));
           clearInterval(timer);
