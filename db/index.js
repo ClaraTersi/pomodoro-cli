@@ -15,7 +15,7 @@ db.defaults({
 }).write();
 
 const currentTaskId = () => {
-  db.get('configuration.current_task_id').value();
+  return db.get('configuration.current_task_id').value();
 };
 
 const addTask = (label = '', description = '') => {
@@ -44,9 +44,17 @@ const getSingleTask = (taskLabel) => {
     .value();
 };
 
+const setTaskFinishTime = (id) => {
+  return db.get('tasks')
+    .find({ id })
+    .assign({ finished_at: new Date() })
+    .write();
+};
+
 module.exports = {
   addTask,
   listTasks,
   getSingleTask,
   currentTaskId,
+  setTaskFinishTime,
 };
