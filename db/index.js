@@ -10,22 +10,23 @@ const db = low(adapter);
 db.defaults({
   tasks: [],
   configuration: {
-    next_id: 1,
+    current_id: 0,
   },
 }).write();
 
 const addTask = (label = '', description = '') => {
-  const nextId = db.get('configuration.next_id').value();
+  const currentId = db.get('configuration.current_id').value();
+  const taskId = currentId + 1;
+  db.set('configuration.current_id', taskId).write();
   db.get('tasks')
     .push({
-      id: nextId,
+      id: taskId,
       label,
       description,
       started_at: new Date(),
       finished_at: '',
     })
     .write();
-  db.set('configuration.next_id', nextId + 1).write();
 };
 
 const listTasks = () => {
