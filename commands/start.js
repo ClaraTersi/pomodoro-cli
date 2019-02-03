@@ -16,10 +16,19 @@ module.exports = () => {
   inquirer
     .prompt(questions)
     .then((answers) => {
-      log(chalk.blue('Pomodoro timer started!'));
+      log(chalk.blue.bold('Pomodoro timer started!'), chalk.red('Press Ctrl+C to interrupt this task.'));
+
       addTask(answers.id, answers.description);
+
+      process.on('SIGINT', () => {
+        // TODO: record the time the task ended
+        log(chalk.red(`\nTask ${answers.id} interrupted.`));
+        process.exit();
+      });
+
       const bar = new ProgressBar(progressText, { total: 25, incomplete: ' ' });
       bar.tick(0, { task: answers.id });
+
       const timer = setInterval(() => {
         bar.tick({ task: answers.id });
         if (bar.complete) {
