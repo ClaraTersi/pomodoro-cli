@@ -1,6 +1,7 @@
 const { log } = console;
 const chalk = require('chalk');
 const { table } = require('table');
+const moment = require('moment-timezone');
 const { listTasks, getSingleTask } = require('../db');
 
 const getTasks = (taskLabel) => {
@@ -13,6 +14,12 @@ const getTasks = (taskLabel) => {
   return tasks;
 };
 
+const formatDateTime = (dateTime) => {
+  if (!dateTime) return '';
+  const timezone = moment.tz.guess();
+  return moment(dateTime).tz(timezone).format('DD/MM/YYYY HH:mm');
+};
+
 const generateReport = (tasks) => {
   const report = [];
   report.push([
@@ -21,7 +28,12 @@ const generateReport = (tasks) => {
     chalk.green.bold('STARTED AT'),
     chalk.green.bold('FINISHED AT'),
   ]);
-  tasks.map(task => report.push([task.label, task.description, task.started_at, task.finished_at]));
+  tasks.map(task => report.push([
+    task.label,
+    task.description,
+    formatDateTime(task.started_at),
+    formatDateTime(task.finished_at),
+  ]));
   const config = {
     columns: {
       1: {
