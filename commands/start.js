@@ -13,7 +13,7 @@ const questions = [
   { type: 'input', name: 'description', message: 'Give a brief description of the task:\n' },
 ];
 
-const progressText = `[${chalk.green(':bar')}] ${chalk.green(':current')}/25 minutes working on task ${chalk.blue.bold(':task')}.`;
+const progressText = `[${chalk.green.bold(':bar')}] ${chalk.green.bold(':current')}/25 minutes working on task ${chalk.blue.bold(':task')}.`;
 
 const finishCurrentTask = () => {
   const currentTask = getCurrentTask();
