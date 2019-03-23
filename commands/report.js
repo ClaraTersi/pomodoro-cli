@@ -34,7 +34,7 @@ const generateReport = (tasks) => {
     task.description,
     formatDateTime(task.started_at),
     formatDateTime(task.finished_at),
-    task.time_elapsed,
+    `${task.time_elapsed} min`,
   ]));
   const config = {
     columns: {
@@ -46,8 +46,10 @@ const generateReport = (tasks) => {
   return table(report, config);
 };
 
+const sumTasksTimeElapsed = tasks => tasks.reduce((sum, task) => sum + task.time_elapsed, 0);
+
 module.exports = (taskTitle) => {
   const tasks = getTasks(taskTitle);
   log(generateReport(tasks));
-  log(`${chalk.green.bold('Time spent in minutes:')} ${tasks.length * 25}\n`);
+  log(`${chalk.green.bold('Time spent in minutes:')} ${sumTasksTimeElapsed(tasks)}\n`);
 };
