@@ -3,6 +3,8 @@ const FileSync = require('lowdb/adapters/FileSync');
 const os = require('os');
 const path = require('path');
 
+const moment = require('moment');
+
 const dataFile = path.join(os.homedir(), 'pomodoro-data.json');
 const adapter = new FileSync(dataFile);
 const db = low(adapter);
@@ -29,6 +31,7 @@ const addTask = (label = '', description = '') => {
       description,
       started_at: new Date(),
       finished_at: '',
+      time_elapsed: '',
     })
     .write();
 };
@@ -45,9 +48,15 @@ const getSingleTask = (taskLabel) => {
 };
 
 const setTaskFinishTime = (id) => {
+  const finishTime = new Date();
+  const task = db.get('tasks')
+    .find({ id })
+    .value();
+  const duration = moment.duration(finishTime - task.started_at);
+  const timeElapsed = `${duration.hours()}h ${duration.minutes()}m`;
   return db.get('tasks')
     .find({ id })
-    .assign({ finished_at: new Date() })
+    .assign({ finished_at: finishTime, time_elapsed: timeElapsed })
     .write();
 };
 
