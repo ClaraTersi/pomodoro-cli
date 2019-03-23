@@ -18,9 +18,8 @@ const progressText = `[${chalk.green(':bar')}] ${chalk.green(':current')}/25 min
 const finishCurrentTask = () => {
   const currentTask = getCurrentTask();
   const finishedAt = new Date();
-  const duration = moment.duration(finishedAt - currentTask.started_at);
-  const timeElapsed = `${duration.hours()}h ${duration.minutes()}m`;
-  setTaskFinished(currentTask.id, finishedAt, timeElapsed);
+  const timeElapsedInMinutes = Math.round(moment.duration(finishedAt - currentTask.started_at).asMinutes());
+  setTaskFinished(currentTask.id, finishedAt, timeElapsedInMinutes);
 };
 
 module.exports = () => {
