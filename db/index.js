@@ -3,8 +3,6 @@ const FileSync = require('lowdb/adapters/FileSync');
 const os = require('os');
 const path = require('path');
 
-const moment = require('moment');
-
 const dataFile = path.join(os.homedir(), 'pomodoro-data.json');
 const adapter = new FileSync(dataFile);
 const db = low(adapter);
@@ -18,6 +16,12 @@ db.defaults({
 
 const currentTaskId = () => {
   return db.get('configuration.current_task_id').value();
+};
+
+const getCurrentTask = () => {
+  return db.get('tasks')
+    .find({ id: currentTaskId() })
+    .value();
 };
 
 const addTask = (label = '', description = '') => {
@@ -47,16 +51,10 @@ const getSingleTask = (taskLabel) => {
     .value();
 };
 
-const setTaskFinishTime = (id) => {
-  const finishTime = new Date();
-  const task = db.get('tasks')
-    .find({ id })
-    .value();
-  const duration = moment.duration(finishTime - task.started_at);
-  const timeElapsed = `${duration.hours()}h ${duration.minutes()}m`;
+const setTaskFinished = (id, finishedAt, timeElapsed) => {
   return db.get('tasks')
     .find({ id })
-    .assign({ finished_at: finishTime, time_elapsed: timeElapsed })
+    .assign({ finished_at: finishedAt, time_elapsed: timeElapsed })
     .write();
 };
 
@@ -70,7 +68,7 @@ module.exports = {
   addTask,
   listTasks,
   getSingleTask,
-  currentTaskId,
-  setTaskFinishTime,
+  setTaskFinished,
   getLabels,
+  getCurrentTask,
 };

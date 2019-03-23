@@ -1,9 +1,12 @@
 const { log } = console;
+const moment = require('moment');
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const ProgressBar = require('progress');
-const { addTask, currentTaskId, setTaskFinishTime } = require('../db');
+const { addTask, setTaskFinished, getCurrentTask } = require('../db');
 const { notify } = require('../notifications');
+
+const TICK_INTERVAL_IN_MILLISECONDS = 60000;
 
 const questions = [
   { type: 'input', name: 'label', message: 'Identify the task you are working on:\n' },
@@ -11,6 +14,14 @@ const questions = [
 ];
 
 const progressText = `[${chalk.green(':bar')}] ${chalk.green(':current')}/25 minutes working on task ${chalk.blue.bold(':task')}.`;
+
+const finishCurrentTask = () => {
+  const currentTask = getCurrentTask();
+  const finishedAt = new Date();
+  const duration = moment.duration(finishedAt - currentTask.started_at);
+  const timeElapsed = `${duration.hours()}h ${duration.minutes()}m`;
+  setTaskFinished(currentTask.id, finishedAt, timeElapsed);
+};
 
 module.exports = () => {
   inquirer
@@ -21,7 +32,7 @@ module.exports = () => {
       addTask(answers.label, answers.description);
 
       process.on('SIGINT', () => {
-        setTaskFinishTime(currentTaskId());
+        finishCurrentTask();
         log(chalk.red(`\nTask ${answers.label} interrupted.`));
         process.exit();
       });
@@ -32,12 +43,12 @@ module.exports = () => {
       const timer = setInterval(() => {
         bar.tick({ task: answers.label });
         if (bar.complete) {
-          setTaskFinishTime(currentTaskId());
+          finishCurrentTask();
           notify();
           log(chalk.blue('Pomodoro finished!'));
           clearInterval(timer);
         }
-      }, 60000);
+      }, TICK_INTERVAL_IN_MILLISECONDS);
     })
     .catch((err) => {
       log(`Unable to start pomodoro timer. Error: ${err}`);
