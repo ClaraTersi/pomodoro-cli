@@ -27,12 +27,14 @@ const generateReport = (tasks) => {
     chalk.green.bold('DESCRIPTION'),
     chalk.green.bold('STARTED AT'),
     chalk.green.bold('FINISHED AT'),
+    chalk.green.bold('TIME ELAPSED'),
   ]);
   tasks.map(task => report.push([
     task.label,
     task.description,
     formatDateTime(task.started_at),
     formatDateTime(task.finished_at),
+    task.time_elapsed,
   ]));
   const config = {
     columns: {
