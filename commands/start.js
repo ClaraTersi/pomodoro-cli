@@ -11,6 +11,7 @@ const TICK_INTERVAL_IN_MILLISECONDS = 60000;
 const questions = [
   { type: 'input', name: 'label', message: 'Identify the task you are working on:\n' },
   { type: 'input', name: 'description', message: 'Give a brief description of the task:\n' },
+  { type: 'input', name: 'duration', message: 'How long (minutes) will this pomodoro take?:\n' },
 ];
 
 const progressText = `[${chalk.green.bold(':bar')}] ${chalk.green.bold(':current')}/25 minutes working on task ${chalk.blue.bold(':task')}.`;
@@ -36,7 +37,7 @@ module.exports = () => {
         process.exit();
       });
 
-      const bar = new ProgressBar(progressText, { total: 25, incomplete: ' ' });
+      const bar = new ProgressBar(progressText, { total: answers.duration, incomplete: ' ' });
       bar.tick(0, { task: answers.label });
 
       const timer = setInterval(() => {
