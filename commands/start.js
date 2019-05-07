@@ -23,12 +23,26 @@ const finishCurrentTask = () => {
   setTaskFinished(currentTask.id, finishedAt, timeElapsedInMinutes);
 };
 
+const startTimer = (answers) => {
+  log(chalk.blue.bold('Pomodoro timer started!'), chalk.red('Press Ctrl+C to interrupt this task.'));
+  const bar = new ProgressBar(progressText, { total: answers.duration, incomplete: ' ' });
+  bar.tick(0, { task: answers.label });
+
+  const timer = setInterval(() => {
+    bar.tick({ task: answers.label });
+    if (bar.complete) {
+      finishCurrentTask();
+      notify();
+      log(chalk.blue('Pomodoro finished!'));
+      clearInterval(timer);
+    }
+  }, TICK_INTERVAL_IN_MILLISECONDS);
+};
+
 module.exports = () => {
   inquirer
     .prompt(questions)
     .then((answers) => {
-      log(chalk.blue.bold('Pomodoro timer started!'), chalk.red('Press Ctrl+C to interrupt this task.'));
-
       addTask(answers.label, answers.description);
 
       process.on('SIGINT', () => {
@@ -37,18 +51,7 @@ module.exports = () => {
         process.exit();
       });
 
-      const bar = new ProgressBar(progressText, { total: answers.duration, incomplete: ' ' });
-      bar.tick(0, { task: answers.label });
-
-      const timer = setInterval(() => {
-        bar.tick({ task: answers.label });
-        if (bar.complete) {
-          finishCurrentTask();
-          notify();
-          log(chalk.blue('Pomodoro finished!'));
-          clearInterval(timer);
-        }
-      }, TICK_INTERVAL_IN_MILLISECONDS);
+      startTimer(answers);
     })
     .catch((err) => {
       log(`Unable to start pomodoro timer. Error: ${err}`);
