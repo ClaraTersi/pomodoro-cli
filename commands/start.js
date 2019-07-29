@@ -14,7 +14,7 @@ const questions = [
   { type: 'input', name: 'duration', message: 'How long (minutes) will this pomodoro take?:\n' },
 ];
 
-const progressText = `[${chalk.green.bold(':bar')}] ${chalk.green.bold(':current')}/25 minutes working on task ${chalk.blue.bold(':task')}.`;
+const progressText = durationInMinutes => `[${chalk.green.bold(':bar')}] ${chalk.green.bold(':current')}/${durationInMinutes} minutes working on task ${chalk.blue.bold(':task')}.`;
 
 const finishCurrentTask = () => {
   const currentTask = getCurrentTask();
@@ -25,7 +25,9 @@ const finishCurrentTask = () => {
 
 const startTimer = (answers) => {
   log(chalk.blue.bold('Pomodoro timer started!'), chalk.red('Press Ctrl+C to interrupt this task.'));
-  const bar = new ProgressBar(progressText, { total: answers.duration, incomplete: ' ' });
+
+  const durationInMinutes = +answers.duration;
+  const bar = new ProgressBar(progressText(durationInMinutes), { total: durationInMinutes, incomplete: ' ' });
   bar.tick(0, { task: answers.label });
 
   const timer = setInterval(() => {
@@ -54,6 +56,6 @@ module.exports = () => {
       startTimer(answers);
     })
     .catch((err) => {
-      log(`Unable to start pomodoro timer. Error: ${err}`);
+      log(`Unable to start pomodoro timer. ${err}`);
     });
 };
