@@ -20,7 +20,7 @@
     "commander": "^2.19.0",
     "inquirer": "^6.2.0",
     "lowdb": "^1.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.23",
     "node-notifier": "^5.3.0",
     "progress": "^2.0.1",
